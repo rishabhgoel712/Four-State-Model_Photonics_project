@@ -64,4 +64,70 @@ line_style = {'-','--','-.','-'};
     set(gca,'position',[0.1 0.19 .85 .7]);% specify these as the fraction of the total.. between 0 and 1
 
     print('-dpng','-r125',figname_png);
-toc
+j=1;
+for k=1:length(on2)
+    if(on2(k)>mean(on2))
+        on22(k)=1;
+    else
+        on22(k)=0;
+    end
+end
+for i=1:length(t1)-1
+  if(on22(i)-on22(i+1)>0)
+      flag(j)=0;
+      cr(j)=t1(i);
+      j=j+1;
+  end
+   if(on22(i)-on22(i+1)<0)
+      flag(j)=1;
+      cr(j)=t1(i);
+      j=j+1;
+  end
+end
+b=1;
+c=2;
+ton(1)=cr(1);
+for a=1:length(cr)-1
+    if(flag(a)==0 && flag(a+1)==1)
+        toff(b)=cr(a+1)-cr(a);
+        b=b+1;
+    end
+    if(flag(a)==1 && flag(a+1)==0)
+        ton(c)=cr(a+1)-cr(a);
+        c=c+1;
+    end
+end
+binranges=0:0.2:max(ton);    %stores the various bins
+figure();
+hist(ton,binranges)% bincounts stores the number of indices of t array in each bin
+title('Ton','fontsize',16);
+%   set(h_legend,'fontsize',16, 'box', 'off');
+xlabel('duration of interval','fontsize',24);
+ylabel('Probabilty density','fontsize',24);
+set(gca, 'Fontsize',24);
+figname_png1 = ['on histogram.png'];
+figname1 = ['on histogram'];
+width = 30;
+height = 10;
+set(gcf, 'PaperPositionMode', 'manual');
+set(gcf, 'PaperSize', [width height]);
+set(gcf, 'PaperPosition', [0 0 width height]);
+set(gca,'position',[0.1 0.19 .85 .7]);% specify these as the fraction of the total.. between 0 and 1
+print('-dpng','-r125',figname_png1);
+binranges=0:0.2:max(toff);    %stores the various bins
+figure();
+hist(toff,binranges)% bincounts stores the number of indices of t array in each bin
+title('Toff','fontsize',16);
+%   set(h_legend,'fontsize',16, 'box', 'off');
+xlabel('duration of interval','fontsize',24);
+ylabel('Probabilty density','fontsize',24);
+set(gca, 'Fontsize',24);
+figname_png2 = ['off histogram.png'];
+figname2 = ['off histogram'];
+width = 30;
+height = 10;
+set(gcf, 'PaperPositionMode', 'manual');
+set(gcf, 'PaperSize', [width height]);
+set(gcf, 'PaperPosition', [0 0 width height]);
+set(gca,'position',[0.1 0.19 .85 .7]);% specify these as the fraction of the total.. between 0 and 1
+print('-dpng','-r125',figname_png2);toc
