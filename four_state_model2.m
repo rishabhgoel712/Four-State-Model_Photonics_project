@@ -9,14 +9,14 @@ taua=100e-9; %for transition from state 3 to 4
 s1=1e-15;   %cross section of NC
 s2=1e-15;   %cross section of NC
 h=2.5*1.6e-19;
-I=0.24e3;   %intensity 
+I=0.08e3;   %intensity 
 W1=s1*I/h;  %rate of transition from state 1 to 2
 W2=s2*I/h;  %rate of transition from state 2 to 3
 bin_size=10e-3; 
 trap=0; %count total number of trap states(3 to 4)
 on=0;   %count total number of on states(2 to 1)
 i=2;    %index for array
-n=9000000;%total number of iterations
+n=1000000;%total number of iterations
 t(1)=0;  %time array
 next(1)=1;%stores the sequence of states with initial state as 1
 on(1)=0;
@@ -54,8 +54,8 @@ line_style = {'-','--','-.','-'};
     ylabel('Intensity (a.u.)','fontsize',24);
     set(gca, 'Fontsize',24);
 
-    figname_png = ['Intensity and time for 4 state model 6.png'];
-    figname = ['Intensity and time for 4 state model 6'];
+    figname_png = ['Intensity and time for 4 state model 7.png'];
+    figname = ['Intensity and time for 4 state model 7'];
     width = 30;
     height = 10;
     set(gcf, 'PaperPositionMode', 'manual');
@@ -64,4 +64,71 @@ line_style = {'-','--','-.','-'};
     set(gca,'position',[0.1 0.19 .85 .7]);% specify these as the fraction of the total.. between 0 and 1
 
     print('-dpng','-r125',figname_png);
+j=1;
+for k=1:length(on2)
+    if(on2(k)>mean(on2))
+        on22(k)=1;
+    else
+        on22(k)=0;
+    end
+end
+for i=1:length(t1)-1
+  if(on22(i)-on22(i+1)>0)
+      flag(j)=0;
+      cr(j)=t1(i);
+      j=j+1;
+  end
+   if(on22(i)-on22(i+1)<0)
+      flag(j)=1;
+      cr(j)=t1(i);
+      j=j+1;
+  end
+end
+b=1;
+c=2;
+ton(1)=cr(1);
+for a=1:length(cr)-1
+    if(flag(a)==0 && flag(a+1)==1)
+        toff(b)=cr(a+1)-cr(a);
+        b=b+1;
+    end
+    if(flag(a)==1 && flag(a+1)==0)
+        ton(c)=cr(a+1)-cr(a);
+        c=c+1;
+    end
+end
+binranges=0:0.2:max(ton);    %stores the various bins
+figure();
+hist(ton,binranges)% bincounts stores the number of indices of t array in each bin
+title('Ton','fontsize',16);
+%   set(h_legend,'fontsize',16, 'box', 'off');
+xlabel('duration of interval','fontsize',24);
+ylabel('Probabilty density','fontsize',24);
+set(gca, 'Fontsize',24);
+figname_png1 = ['on histogram.png'];
+figname1 = ['on histogram'];
+width = 30;
+height = 10;
+set(gcf, 'PaperPositionMode', 'manual');
+set(gcf, 'PaperSize', [width height]);
+set(gcf, 'PaperPosition', [0 0 width height]);
+set(gca,'position',[0.1 0.19 .85 .7]);% specify these as the fraction of the total.. between 0 and 1
+print('-dpng','-r125',figname_png1);
+binranges=0:0.2:max(toff);    %stores the various bins
+figure();
+hist(toff,binranges)% bincounts stores the number of indices of t array in each bin
+title('Toff','fontsize',16);
+%   set(h_legend,'fontsize',16, 'box', 'off');
+xlabel('duration of interval','fontsize',24);
+ylabel('Probabilty density','fontsize',24);
+set(gca, 'Fontsize',24);
+figname_png2 = ['off histogram.png'];
+figname2 = ['off histogram'];
+width = 30;
+height = 10;
+set(gcf, 'PaperPositionMode', 'manual');
+set(gcf, 'PaperSize', [width height]);
+set(gcf, 'PaperPosition', [0 0 width height]);
+set(gca,'position',[0.1 0.19 .85 .7]);% specify these as the fraction of the total.. between 0 and 1
+print('-dpng','-r125',figname_png2);
 toc
