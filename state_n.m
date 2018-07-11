@@ -1,7 +1,7 @@
 % state1 is with 0 e-h pair, state2 is with one e-h pair
 % state3 is with 2 e-h pairs, state4 is the trap state
 
-function [next, tinc,tr,on1,f,num] =state_n(st, W1,W2,tau1,tau2,taua,tau)
+function [next, tinc,tr,on1] =state_n(st, W1,W2,tau1,tau2,taua,tau)
 tr=0;
 on1=0;
 f=rand();
