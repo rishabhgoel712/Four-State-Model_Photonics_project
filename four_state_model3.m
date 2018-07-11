@@ -4,8 +4,8 @@ close all;
 tic
 tau1=4e-9;  %for transition from state 2 to 1
 tau2=1e-9;  %for transition from state 3 to 2
-tau=0.8;    %for transition from state 4 to 1
-taua=100e-9; %for transition from state 3 to 4
+tau=0.24;    %for transition from state 4 to 1
+taua=10e-9; %for transition from state 3 to 4
 s1=1e-15;   %cross section of NC
 s2=1e-15;   %cross section of NC
 h=2.5*1.6e-19;
@@ -39,7 +39,7 @@ binranges=0:bin_size:max(t);    %stores the various bins
 sr=1;
 for y=1:n2 %binning method
    on2(y)= sum(on(sr:bincounts(y)+sr));
-   st=bincounts(y)+1;
+   sr=bincounts(y)+1;
 end
 t1 = 0:bin_size:(n2-1)*bin_size;
 c = [[0,0,0];[0.7,0.7,0.7];[1,0,0];[0,1,0];[0,0,1]];
@@ -97,7 +97,7 @@ for a=1:length(cr)-1
         c=c+1;
     end
 end
-binranges=0.1:0.2:max(ton);    %stores the various bins
+binranges=0:0.2:max(ton);    %stores the various bins
 figure();
 hist(ton,binranges)% bincounts stores the number of indices of t array in each bin
 title('Ton','fontsize',16);
@@ -107,14 +107,14 @@ ylabel('Probabilty density','fontsize',24);
 set(gca, 'Fontsize',24);
 figname_png1 = ['on histogram.png'];
 figname1 = ['on histogram'];
-width = 20;
+width = 30;
 height = 10;
 set(gcf, 'PaperPositionMode', 'manual');
 set(gcf, 'PaperSize', [width height]);
 set(gcf, 'PaperPosition', [0 0 width height]);
 set(gca,'position',[0.1 0.19 .85 .7]);% specify these as the fraction of the total.. between 0 and 1
 print('-dpng','-r125',figname_png1);
-binranges=0.1:0.2:max(toff);    %stores the various bins
+binranges=0:0.2:max(toff);    %stores the various bins
 figure();
 hist(toff,binranges)% bincounts stores the number of indices of t array in each bin
 title('Toff','fontsize',16);
@@ -124,7 +124,7 @@ ylabel('Probabilty density','fontsize',24);
 set(gca, 'Fontsize',24);
 figname_png2 = ['off histogram.png'];
 figname2 = ['off histogram'];
-width = 20;
+width = 30;
 height = 10;
 set(gcf, 'PaperPositionMode', 'manual');
 set(gcf, 'PaperSize', [width height]);
